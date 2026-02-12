@@ -1,0 +1,62 @@
+/* =========================================================
+  ページネーション
+========================================================= */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination a,
+.pagination strong {
+  text-decoration: none;
+  padding: 10px 15px;
+  margin: 0 4px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 新しいカラー：#0078d7と#005a9e */
+.pagination a:hover,
+.pagination strong:hover {
+  background-color: #0078d7;
+  color: #fff;
+}
+
+.pagination .ellipsis {
+  padding: 10px 15px;
+  margin: 0 4px;
+  font-size: 14px;
+  color: #777;
+}
+
+.pagination a:disabled,
+.pagination strong:disabled {
+  background-color: #f0f0f0;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination a.active,
+.pagination strong.active {
+  background-color: #005a9e;  /* アクティブページに濃い青 */
+  color: white;
+  font-weight: bold;
+}
+
+.pagination .previous,
+.pagination .next {
+  font-weight: bold;
+}
+
+.pagination .previous {
+  margin-right: 10px;
+}
+
+.pagination .next {
+  margin-left: 10px;
+}

@@ -1,0 +1,38 @@
+/* ================================
+   item_detail.php専用CSS
+   ファイル名：item_detail.css
+   ================================ */
+.box {
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.reply {
+  margin-left: 24px;
+  border-left: 3px solid #ddd;
+  padding-left: 12px;
+  margin-top: 8px;
+}
+
+.meta {
+  color:#666;
+  font-size: 12px;
+}
+
+.error {
+  background:#ffecec;
+  border:1px solid #ffb3b3;
+  padding:10px;
+  border-radius:8px;
+}
+
+textarea {
+  width: 100%;
+  height: 80px;
+}
+
+.reply textarea {
+  height: 60px;
+}

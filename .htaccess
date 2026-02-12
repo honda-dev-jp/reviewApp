@@ -1,0 +1,23 @@
+# 既存の設定：HTTPSへの転送（これは消さずに残します）
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# ----------------------------------------------------------------------
+# セキュリティ強化設定（ここから追記）
+# ----------------------------------------------------------------------
+
+# 1. WordPressを狙ったボットなどのアクセスを拒否
+<FilesMatch "^(wp-.*|xmlrpc\.php)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# 2. ディレクトリの中身（ファイル一覧）をブラウザで見せない
+Options -Indexes
+
+# 3. .htaccess自身や設定ファイル（.envなど）へのアクセスを禁止
+<FilesMatch "^\.(ht|env)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

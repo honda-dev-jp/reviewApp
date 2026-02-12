@@ -1,0 +1,12 @@
+# 設定ファイルを隠す
+/config/env.php
+/config/database.php
+/.vscode
+
+# --- 画像ファイルの設定を修正 ---
+# 画像もGitに入れて、GitHub上でもUIを正しく表示させる！
+# /images/icon/*.jpg  ← これらは消すか、# で無効にする
+# /images/thumbnail/*.jpg
+
+# 管理フォルダを隠す
+/admin
