@@ -53,3 +53,10 @@ https://portfolio.honda-dev.com/
 
 ### マイページ
 ![マイページ](docs/images/mypage.png)
+
+## ER図
+
+![ER図](docs/images/er.png)
+
+users・items・reviews を中心とした正規化設計。
+外部キー制約によりデータ整合性を担保しています。
