@@ -1,6 +1,15 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * 作品一覧ページ
+ *
+ * 修正履歴：
+ * - [SEC] サムネイル画像パスに basename() を適用
+ *   DBから取得した image 値をそのままパスに連結していたため
+ *   パストラバーサルの可能性があった → basename() + sanitize() の二重防御に統一
+ */
+
 require_once __DIR__ . '/../config/env.php';
 require_once __DIR__ . '/../app/security/session.php';
 
@@ -19,17 +28,16 @@ require_once __DIR__ . '/../includes/pagination.php'; // pagination.php をイ�
 // ==============================
 // ガード処理(ページネーション)
 // ==============================
-if (isset($_GET['page'])) {
-  $page = intval($_GET['page']);
+// 修正：以前は $page をガード内で一度定義した後、再度上書きしていた（二重定義）
+// → まず $page を確定させてからガードを行う方式に統一し、冗長な再代入を除去
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-  if ($page < 1) {
-    redirectWithError('不正なアクセスです。正しいページからアクセスしてください。');
-  }
+if ($page < 1) {
+  redirectWithError('不正なアクセスです。正しいページからアクセスしてください。');
 }
 
 // ページネーション設定
 $perPage = 10;
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 ?>
 
@@ -91,8 +99,10 @@ if (empty($rec)) {
   echo '<div class="item-list">';
   foreach ($rec as $val) {
     // 画像の有無で処理を分岐
+    // 修正：DBの値に basename() を適用してパストラバーサルを防ぐ
+    // （mypage.php / profile_edit.php と同様の防御に統一）
     $imageFile = !empty($val['image'])
-        ? '../images/thumbnail/' . sanitize($val['image'])
+        ? '../images/thumbnail/' . sanitize(basename($val['image']))
         : '../images/no_image/no_image.png';
 
     echo '<div class="item-card">';

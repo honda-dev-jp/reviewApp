@@ -10,6 +10,13 @@ declare(strict_types=1);
  * - CSRF hidden は embedCSRFToken() を使用（csrf_token 変数は持たない）
  * - 表示と処理の責務を分離（ページ専用関数で集約）
  * - 不正/例外時は redirect_guard 経由で安全な場所へ退避
+ *
+ * 修正履歴：
+ * - [BUG] add_reply のバリデーション関数ミス修正
+ *   validateAddReview() → validateAddReply() へ変更
+ *   （返信フォームの reply_text 空チェック・review_id 正値チェックが機能していなかった）
+ * - [SEC] PRGリダイレクト先を $_SERVER['PHP_SELF'] から getBaseUrl()+固定パスへ変更
+ *   （PHP_SELF はリクエストURIから生成されるため XSS リスクあり）
  */
 
 require_once __DIR__ . '/../config/env.php';
@@ -232,7 +239,9 @@ try {
             ]);
 
             // PRG（二重投稿防止）
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?item_id=' . $item_id);
+            // ※ $_SERVER['PHP_SELF'] はリクエストURIから生成されるため XSS リスクがある
+            //   → getBaseUrl() + 固定パスで安全にリダイレクト
+            header('Location: ' . getBaseUrl() . '/items/item_detail.php?item_id=' . $item_id);
             exit;
           }
           break;
@@ -244,8 +253,10 @@ try {
           // エラー表示位置を特定するため、返信対象 review_id を保持
           $reply_target_review_id = (int)($_POST['review_id'] ?? 0);
 
-          // 入力バリデーション（共通関数）
-          $review_errors = validateAddReview($_POST);
+          // 入力バリデーション（返信用の validateAddReply を使う）
+          // ※ 修正前は誤って validateAddReview() を呼んでいたため
+          //    reply_text の空チェック・review_id 正値チェックが機能していなかった
+          $reply_errors = validateAddReply($_POST);
 
           // 返信先レビューがこの作品に属しているか確認（DB整合性）
           if (!$reply_errors) {
@@ -270,7 +281,9 @@ try {
             ]);
 
             // PRG（二重投稿防止）
-            header('Location: ' . $_SERVER['PHP_SELF'] . '?item_id=' . $item_id);
+            // ※ $_SERVER['PHP_SELF'] はリクエストURIから生成されるため XSS リスクがある
+            //   → getBaseUrl() + 固定パスで安全にリダイレクト
+            header('Location: ' . getBaseUrl() . '/items/item_detail.php?item_id=' . $item_id);
             exit;
           }
           break;
