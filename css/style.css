@@ -1,16 +1,43 @@
 /* =========================================================
+  style.css  ―  全ページ共通スタイル
+  =========================================================
+  構成：
+    01. CSS Variables（テーマカラー・共通値）
+    02. Base / Reset
+    03. Layout（ページ骨格・sticky footer）
+    04. Header
+    05. Footer
+    06. X リンク
+    07. Menu ボタン（トップ・マイページ）
+    08. Item Cards（作品一覧カード）
+    09. Button Group（submit ボタン群）
+    10. Forms（入力フォーム・バリデーション表示）
+    11. Rating（星評価 共通）
+    12. Icons / MyPage（ユーザーアイコン・マイページ）
+    13. Review History（レビュー履歴カード）
+    14. Withdraw（退会関連 ― mypage / account_delete_confirm 共通）
+    15. Responsive（@media はここに集約）
+
+  移動済み：
+    - .box / .reply / .meta / .error / textarea 幅 → item_detail.css
+    - .item-detail-wrap 以降の作品詳細レイアウト  → item_detail.css
+  ========================================================= */
+
+
+/* =========================================================
   01. CSS Variables（テーマ）
 ========================================================= */
 :root {
-  --bg: #f4f4f4;
-  --text: #2e2e2e;
-  --muted: #777;
-  --primary: #4a4a4a;
+  --bg:           #f4f4f4;
+  --text:         #2e2e2e;
+  --muted:        #777;
+  --primary:      #4a4a4a;
   --primary-dark: #2f2f2f;
-  --accent: #888;
-  --card: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
+  --accent:       #888;
+  --card:         #ffffff;
+  --border:       rgba(0, 0, 0, 0.1);
 }
+
 
 /* =========================================================
   02. Base / Reset（全体共通）
@@ -21,26 +48,27 @@ html,
 body {
   height: 100%;
   margin: 0;
+  overflow-x: hidden; /* 横はみ出し防止（全デバイス共通） */
 }
 
 body {
-  display: flex;              /* sticky footer のため */
-  flex-direction: column;     /* 縦レイアウト */
-  min-height: 100vh;          /* 画面高を最低保証 */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
   font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
   padding: 0;
-  background-color: #dbedf0;  /* 現在の指定を優先 */
-  /* background-color: var(--bg); */
+  background-color: #dbedf0;
   color: var(--text);
   line-height: 1.6;
 }
 
 ul {
   list-style: none;
-  padding-left: 0;            /* ul の左余白が気になる場合の定番 */
+  padding-left: 0;
   margin: 0;
 }
+
 
 /* =========================================================
   03. Layout（ページ骨格）
@@ -49,8 +77,8 @@ ul {
 main {
   flex: 1;
 
-  /* 幅の考え方を変更：スマホはほぼ全幅、PCは上限をpxで制限 */
-  width: min(1100px, calc(100% - 48px)); /* 左右24pxずつの余白 */
+  /* スマホはほぼ全幅、PCは最大幅 1100px で制限 */
+  width: min(1100px, calc(100% - 48px)); /* 左右 24px ずつの余白 */
   margin: 18px auto;
   padding: 32px;
 
@@ -62,8 +90,9 @@ main {
     0 2px 0 rgba(255, 255, 255, 0.9) inset;
 }
 
+
 /* =========================================================
-  04. Header（ヘッダー）
+  04. Header
 ========================================================= */
 header {
   display: flex;
@@ -115,13 +144,14 @@ header nav a:hover {
   color: #003e7e;
 }
 
+
 /* =========================================================
-  05. Footer（フッター）
-  - main が flex:1 で伸びるため、コンテンツが少なくても下に張り付く
+  05. Footer
+  - main が flex:1 で伸びるため、コンテンツが少なくても下に貼り付く
 ========================================================= */
 footer {
   font-size: 0.8rem;
-  margin-top: 40px; /* コンテンツが多い時の視認性確保 */
+  margin-top: 40px;
   padding: 20px 30px;
 
   background: rgba(255, 255, 255, 0.7);
@@ -140,21 +170,23 @@ footer {
   margin: 0 0 3px;
 }
 
+
 /* =========================================================
-  06. Xリンク専用のスタイル
+  06. X リンク専用スタイル
 ========================================================= */
 .x-link {
-    color: #1DA1F2;
-    text-decoration: none;
-    font-weight: bold;
+  color: #1DA1F2;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .x-link:hover {
-    text-decoration: underline; /* マウスを乗せた時に線を出すとおしゃれです */
+  text-decoration: underline;
 }
 
+
 /* =========================================================
-  07. Menu（トップのメニューリンク）
+  07. Menu（マイページ等のメニューボタン）
 ========================================================= */
 .menu-buttons {
   display: flex;
@@ -185,8 +217,9 @@ footer {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
+
 /* =========================================================
-  08. Item List（作品一覧カード）
+  08. Item Cards（作品一覧カード）
 ========================================================= */
 .item-list {
   padding: 20px;
@@ -201,7 +234,7 @@ footer {
   padding: 18px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.10);
-  transition: transform 0.2s ease, box-shadow 0.2s ease; /* hover で動くので明示 */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .item-card:hover {
@@ -257,6 +290,7 @@ footer {
   color: #666;
 }
 
+
 /* =========================================================
   09. Button Group（submit ボタン群）
 ========================================================= */
@@ -282,8 +316,9 @@ footer {
   background-color: #d0d0d0;
 }
 
+
 /* =========================================================
-  10. Forms（入力フォーム）
+  10. Forms（入力フォーム・バリデーション表示）
 ========================================================= */
 .form {
   display: inline-block;
@@ -302,8 +337,7 @@ input[type="file"] {
 }
 
 /* エラー表示 */
-.error-message,
-.error {
+.error-message {
   color: red;
   font-size: 16px;
   text-align: center;
@@ -319,6 +353,14 @@ input[type="file"] {
   font-size: 16px;
   text-align: center;
 }
+
+/* 補足注意書き（例：1人1レビューの説明） */
+.note {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 8px;
+}
+
 
 /* =========================================================
   11. Rating（星評価表示 共通）
@@ -355,6 +397,7 @@ input[type="file"] {
   font-size: 14px;
 }
 
+
 /* =========================================================
   12. Icons / MyPage（ユーザーアイコン・マイページ）
 ========================================================= */
@@ -386,307 +429,34 @@ input[type="file"] {
   font-weight: bold;
 }
 
-/* =========================================================
-  レスポンシブ対応：スマートフォン用調整
-========================================================= */
-@media (max-width: 600px) {
-  main {
-    width: calc(100% - 24px);
-    margin: 12px auto;
-    padding: 18px;
-  }
-}
 
 /* =========================================================
-  レスポンシブ対応：横はみ出し防止（保険）
-========================================================= */
-html, body {
-  overflow-x: hidden;
-}
-
-/* =========================================================
-  レスポンシブ対応：スマートフォン用調整（本命）
-========================================================= */
-@media (max-width: 600px) {
-  main {
-    width: calc(100% - 24px); /* 左右12px */
-    margin: 12px auto;
-    padding: 16px;            /* 32px はスマホには大きい */
-  }
-
-  /* ボタン系：固定幅をスマホで可変に */
-  .menu-btn {
-    width: 100%;
-    max-width: 320px;         /* 大きすぎない上限 */
-  }
-
-  /* フッター：内側余白で溢れないように */
-  .footer-inner {
-    width: 100%;
-    padding: 0;
-  }
-
-  /* フォーム：入力欄は親幅に合わせる */
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  input[type="file"] {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
-  .item-row {
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .item-thumb {
-    width: 72px;
-    height: 72px;
-    margin-right: 0; /* gap を使うので不要 */
-  }
-
-  .item-content {
-    min-width: 0; /* すでにあるが念のため */
-  }
-
-  .item-title {
-    white-space: normal;      /* 1行固定を解除して折り返す */
-    overflow: visible;
-    text-overflow: clip;
-  }
-}
-
-@media (max-width: 600px) {
-  .menu-buttons {
-    width: 100%;
-    align-items: stretch; /* 子要素を同じ幅に揃える */
-  }
-
-  .menu-btn {
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
-    text-align: center;
-    white-space: normal; /* 長い文字は折り返す */
-  }
-}
-
-@media (max-width: 600px) {
-  .menu-btn {
-    line-height: 1.3;
-    padding: 14px 16px;
-  }
-}
-
-/* =========================================================
-  レスポンシブ対応：スマホ用 文字サイズ・余白の調整
-========================================================= */
-@media (max-width: 600px) {
-
-  /* 全体の基準文字サイズを少し下げる */
-  body {
-    font-size: 14px; /* PC想定16px → スマホ14px */
-  }
-
-  /* 見出しはやや控えめに */
-  header h1 {
-    font-size: 1.3rem;
-  }
-
-  /* メニュー・ボタン文字 */
-  .menu-btn {
-    font-size: 0.95rem;
-  }
-
-  /* 一覧・本文 */
-  .item-title {
-    font-size: 0.95rem;
-  }
-
-  .item-rating,
-  .rating-label {
-    font-size: 0.8rem;
-  }
-
-  /* フッター文字 */
-  footer {
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 600px) {
-
-  main {
-    padding: 16px;
-  }
-
-  .menu-btn {
-    padding: 14px 16px;
-  }
-
-  .item-card {
-    padding: 14px;
-  }
-}
-
-@media (max-width: 600px) {
-  .item-rating {
-    flex-wrap: wrap;      /* はみ出す時は折り返す */
-    row-gap: 4px;
-    max-width: 100%;
-  }
-
-  .rating-label {
-    white-space: normal; /* ラベルが長い場合も折り返す */
-  }
-}
-
-@media (max-width: 600px) {
-  .item-title {
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-  }
-}
-
-@media (max-width: 600px) {
-  .star-rating {
-    font-size: 16px; /* 18px → 16px */
-  }
-
-  .rating-value,
-  .no-rating {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 600px) {
-  .item-row {
-    flex-direction: column;   /* 縦積み */
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  .item-thumb {
-    width: 100%;
-    height: auto;
-    max-height: 180px;        /* 画像が大きくなり過ぎないよう上限 */
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 600px) {
-  /* ヘッダー全体を縦積みに変更 */
-  header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    padding: 12px 14px;
-  }
-
-  /* タイトルは小さめ＆折り返し許可 */
-  header h1 {
-    font-size: 1.2rem;
-    line-height: 1.2;
-    white-space: normal;
-  }
-
-  /* navを左右に分散させ、折り返し可能に */
-  header nav {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  /* ユーザー名が長い場合に潰れないように省略 */
-  header nav span {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  /* ボタンを小さめにして収まりやすく */
-  header nav a {
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-}
-
-@media (max-width: 600px) {
-
-  /* ===== 全体の基準文字サイズ（header 以外に効く） ===== */
-  body {
-    font-size: 13px;   /* 14pxでもOK。13pxの方がスマホらしい */
-  }
-
-  /* ===== main 内の本文 ===== */
-  main {
-    font-size: 1rem;  /* body基準に揃える */
-  }
-
-  /* ===== 汎用テキスト ===== */
-  p,
-  li,
-  label {
-    font-size: 1rem;
-  }
-
-   /* ===== フォーム ===== */
-  input,
-  textarea,
-  select {
-    font-size: 1rem;
-  }
-}
-
-/* レビュー投稿時の注意文（1人1作品1レビューの仕様説明用） */
-.note {
-  font-size: 0.9em;     /* 本文より少し小さくして補足であることを示す */
-  color: #666;          /* 目立ちすぎない注意書き用の色 */
-  margin-bottom: 8px;  /* フォームとの間に余白を確保 */
-}
-
-/* =========================================================
-  Review History（レビュー履歴：カード化）
-  - item_list のカードUIを流用し、差分だけ追加
+  13. Review History（レビュー履歴カード）
+  - item_list のカードUIを流用し、差分のみ追加
 ========================================================= */
 .history-row {
-  /* item-row は align-items:center 前提。履歴は上寄せが見やすい場合がある */
   align-items: flex-start;
-  gap: 16px; /* 画像の margin-right の代替（チェック列との間隔） */
+  gap: 16px;
 }
 
 .history-card-check {
-  flex: 0 0 44px;          /* チェック列固定幅 */
+  flex: 0 0 44px;
   display: flex;
   justify-content: center;
-  padding-top: 6px;        /* テキスト先頭と揃える微調整 */
+  padding-top: 6px;
 }
 
 .history-card-check input[type="checkbox"] {
-  transform: scale(1.1);   /* 小さすぎる場合のみ。不要なら削除可 */
+  transform: scale(1.1);
 }
 
 .history-content {
-  min-width: 0;            /* 長文で横はみ出し防止 */
+  min-width: 0;
 }
 
 .history-card-body {
-  white-space: normal;     /* 折り返し */
-  overflow-wrap: anywhere; /* 長い連続文字にも強い */
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .history-card-meta {
@@ -696,70 +466,29 @@ html, body {
 }
 
 .history-card-actions {
-  justify-content: flex-end; /* 削除ボタンを右寄せ */
+  justify-content: flex-end;
 }
+
 
 /* =========================================================
-  item_detail レイアウト
+  14. Withdraw（退会関連）
+  - mypage.php の退会ボタン枠と
+    account_delete_confirm.php の確認ボタンで共有
 ========================================================= */
-.item-detail-wrap {
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  margin-top: 16px;
-}
 
-/* 左：画像 */
-.item-detail-image-area {
-  flex-shrink: 0;
-}
-
-.item-detail-image {
-  width: 180px;          /* ← ここで小さくする */
-  height: auto;
-  display: block;
-  border-radius: 6px;
-  object-fit: cover;
-  background-color: #eee;
-}
-
-/* 右：説明文 */
-.item-detail-description {
-  flex: 1;
-  line-height: 1.6;
-}
-
-/* スマホ対応（縦並び） */
-@media (max-width: 600px) {
-  .item-detail-wrap {
-    flex-direction: column;
-  }
-
-  .item-detail-image {
-    width: 100%;
-    max-width: 240px;
-  }
-}
-
-/* =========================================================
-  退会処理ボタン レイアウト
-  危険操作（退会）のため、通常メニューから視覚的に分離
-========================================================= */
-/* メニュー群との視覚的な区切り */
+/* ---- mypage：退会ボタン枠 ---- */
 .form-wrap {
   display: flex;
-  justify-content: flex-end; /* 右寄せ */
+  justify-content: flex-end;
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px solid #ddd; /* 危険操作の区切り */
+  border-top: 1px solid #ddd;
 }
 
-/* form 自体 */
 .form-right {
   margin-left: auto;
 }
 
-/* 退会ボタン（目立たせない） */
 .form-right input[type="submit"] {
   background: none;
   border: 1px solid #aaa;
@@ -769,26 +498,21 @@ html, body {
   cursor: pointer;
 }
 
-/* hover 時のみ注意喚起 */
 .form-right input[type="submit"]:hover {
   border-color: #c00;
   color: #c00;
 }
 
-/* =========================================================
-  Account Delete Confirm（退会確認画面）
-========================================================= */
+/* ---- account_delete_confirm：確認画面 ---- */
 .delete-confirm-actions {
   margin-top: 1.5rem;
 }
 
-/* 右寄せ・横並び・間隔 */
 .delete-confirm-actions .button-group {
   justify-content: flex-end;
   gap: 20px;
 }
 
-/* button も submit と同じ見た目に揃える */
 .delete-confirm-actions .button-group button,
 .delete-confirm-actions .button-group input[type="submit"] {
   padding: 10px 20px;
@@ -803,6 +527,8 @@ html, body {
   background: none;
   color: #555;
   border-color: #aaa;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .delete-confirm-actions .btn-cancel:hover {
@@ -810,22 +536,176 @@ html, body {
   color: #333;
 }
 
-/* 退会：危険色（confirmでは明示） */
-.delete-confirm-actions .btn-danger {
-  background: #b00020;
-  border-color: #b00020;
-  color: #fff;
-}
-
-.delete-confirm-actions .btn-danger:hover {
-  filter: brightness(0.95);
-}
-
+/* 退会実行：危険色（confirmでは明示） */
+/* 修正：旧 style.css では .btn-danger が2箇所に重複定義されていたため1箇所に統合 */
 .btn-danger {
   background: #b00020;
   border-color: #b00020;
+  color: #fff;
   opacity: 0.9;
 }
+
 .btn-danger:hover {
+  filter: brightness(0.95);
   opacity: 1;
+}
+
+
+/* =========================================================
+  15. Responsive（@media はここに集約）
+  修正：旧 style.css では @media (max-width: 600px) が 11 回に分散していたため
+        このセクションにまとめ、重複プロパティを統合した。
+========================================================= */
+@media (max-width: 600px) {
+
+  /* ---- Base ---- */
+  body {
+    font-size: 13px;
+  }
+
+  /* ---- Layout（main） ---- */
+  main {
+    width: calc(100% - 24px); /* 左右 12px */
+    margin: 12px auto;
+    padding: 16px;
+    font-size: 1rem;
+  }
+
+  /* ---- 汎用テキスト ---- */
+  p,
+  li,
+  label {
+    font-size: 1rem;
+  }
+
+  /* ---- フォーム ---- */
+  input,
+  textarea,
+  select {
+    font-size: 1rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  input[type="file"] {
+    max-width: 100%;
+  }
+
+  /* ---- Header ---- */
+  header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  header h1 {
+    font-size: 1.2rem;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  header nav {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  header nav span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  header nav a {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    font-size: 0.75rem;
+  }
+
+  .footer-inner {
+    width: 100%;
+    padding: 0;
+  }
+
+  /* ---- Menu ---- */
+  .menu-buttons {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .menu-btn {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    text-align: center;
+    white-space: normal;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    padding: 14px 16px;
+  }
+
+  /* ---- Item Cards ---- */
+  .item-card {
+    padding: 14px;
+  }
+
+  .item-row {
+    flex-direction: column; /* 縦積み */
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .item-thumb {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    margin-right: 0;
+  }
+
+  .item-content {
+    min-width: 0;
+  }
+
+  .item-title {
+    font-size: 0.95rem;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  /* ---- Rating ---- */
+  .item-rating {
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    row-gap: 4px;
+    max-width: 100%;
+  }
+
+  .rating-label {
+    font-size: 0.8rem;
+    white-space: normal;
+  }
+
+  .star-rating {
+    font-size: 16px;
+  }
+
+  .rating-value,
+  .no-rating {
+    font-size: 12px;
+  }
 }
