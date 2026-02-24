@@ -60,3 +60,12 @@ https://portfolio.honda-dev.com/
 
 users・items・reviews を中心とした正規化設計。
 外部キー制約によりデータ整合性を担保しています。
+
+## 更新履歴
+
+### 2026/02/24
+- fix/sec: 返信バリデーション関数の誤りを修正・XSSリスク対応・basename()追加
+- refactor: profile_edit_check のUPDATE文をリファクタリング
+- chore: コード品質の細かい修正・相対パスを絶対パスに統一
+- style: style.cssのリファクタリングとCSS分割・未使用ファイル削除
+- sec: images/.htaccessにno_image除外ルールを追加
