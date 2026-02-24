@@ -2,17 +2,20 @@
 # 画像への直接アクセス・直リンクを制限
 # ----------------------------------------------------------------------
 
-# 1. ブラウザでフォルダを開いたときにファイル一覧が見えるのを防ぐ
+# 1. ディレクトリ一覧を非表示
 Options -Indexes
 
-# 2. 直リンク禁止（自分のサイト以外からのアクセスを拒否）
-# imagesフォルダ専用の記述案
+# 2. 直リンク禁止（icon・thumbnail のみ対象）
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    # 自分のポートフォリオサイトからのアクセス（リファラあり）なら許可して終了
+
+    # no_image は制限しない
+    RewriteRule ^no_image/ - [L]
+
+    # 自サイトからのリファラなら許可
     RewriteCond %{HTTP_REFERER} ^https://portfolio\.honda-dev\.com [NC]
     RewriteRule ^ - [L]
 
-    # それ以外（直接入力や他サイトからのリンク）で画像ファイルへのアクセスなら403
+    # それ以外の画像アクセスは403
     RewriteRule \.(jpg|jpeg|png|gif|webp)$ - [F,NC]
 </IfModule>
