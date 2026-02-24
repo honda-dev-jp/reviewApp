@@ -34,7 +34,7 @@ requirePost();
 
 // CSRFトークンの検証
 if (!validateCSRFToken()) {
-    redirectWithError('不正な操作が検出されました。', './review_hist.php');
+    redirectWithError('不正な操作が検出されました。', '/review_hist/review_hist.php');
 }
 
 /* =========================================================
@@ -52,12 +52,12 @@ try {
 
   // 厳格チェック：送信されたID数と一致しない場合は不正扱い
   if (count($rows) !== count($reviewIds)) {
-    redirectWithError('不正な値です。', './review_hist.php');
+    redirectWithError('不正な値です。', '/review_hist/review_hist.php');
   }
 
 } catch (InvalidArgumentException $e) {
   // 入力エラー（未選択・不正値）→ 一覧へ戻す
-  redirectWithError($e->getMessage(), './review_hist.php');
+  redirectWithError($e->getMessage(), '/review_hist/review_hist.php');
 
 } catch (Throwable $e) {
   // DB/システムエラー → 共通ハンドラ（ログ→ユーザー通知→戻す）
@@ -99,7 +99,7 @@ try {
   </div>
 
   <!-- 削除実行へ -->
-  <form method="post" action="review_hist_delete.php" class="button-group history-card-actions">
+  <form method="post" action="<?= getBaseUrl() ?>/review_hist/review_hist_delete.php" class="button-group history-card-actions">
     <?php foreach ($rows as $val): ?>
       <input type="hidden" name="review_ids[]" value="<?= (int)$val['review_id'] ?>">
     <?php endforeach; ?>
@@ -107,7 +107,7 @@ try {
     <input type="submit" value="削除">
   </form>
 
-  <a href="./review_hist.php">レビュー履歴に戻る</a>
+  <a href="<?= getBaseUrl() ?>/review_hist/review_hist.php">レビュー履歴に戻る</a>
 </main>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

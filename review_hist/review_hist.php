@@ -30,8 +30,8 @@
 	<!-- meta情報の読込み -->
 	<?php require_once __DIR__ . '/../includes/meta.php'; ?>
 
-  <link rel="stylesheet" href="../css/pagination.css">
-  <link rel="stylesheet" href="../css/scroll_arrow.css">
+  <link rel="stylesheet" href="<?= getBaseUrl() ?>/css/pagination.css">
+  <link rel="stylesheet" href="<?= getBaseUrl() ?>/css/scroll_arrow.css">
 	<title>仮想映画レビュー　レビュー履歴</title>
 </head>
 <body>
@@ -51,17 +51,16 @@ outputFlash();
 // ==============================
 // ガード処理(ページネーション)
 // ==============================
-if (isset($_GET['page'])) {
-  $page = intval($_GET['page']);
+// 修正：以前は $page をガード内で一度定義した後、再度上書きしていた（二重定義）
+// → まず $page を確定させてからガードを行う方式に統一し、冗長な再代入を除去
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-  if ($page < 1) {
-    redirectWithError('不正なアクセスです。正しいページからアクセスしてください。');
-  }
+if ($page < 1) {
+  redirectWithError('不正なアクセスです。正しいページからアクセスしてください。');
 }
 
 // ページネーション設定
 $perPage = 10;
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 try{
   // DB接続
@@ -99,7 +98,7 @@ try{
 ?>
 
 <!-- レビュー書込み履歴 -->
-<form method="post" action="review_hist_delete_check.php">
+<form method="post" action="<?= getBaseUrl() ?>/review_hist/review_hist_delete_check.php">
 
   <div class="item-list history-list-wrap">
 
@@ -140,7 +139,7 @@ try{
   <?php embedCSRFToken(); ?>
   </form>
 
-	<a href="../mypage/mypage.php">マイページに戻る</a>
+	<a href="<?= getBaseUrl() ?>/mypage/mypage.php">マイページに戻る</a>
   
   <?php
   // ページネーションリンクの生成
@@ -157,7 +156,7 @@ try{
 <div id="scroll-top" class="scroll-arrow scroll-arrow--top" title="ページトップへ">↑</div>
 
 <!-- スクロール矢印（ページ上下移動） -->
-<script src="../js/scroll_arrow.js?v=1"></script>
+<script src="<?= getBaseUrl() ?>/js/scroll_arrow.js?v=1"></script>
 </div>
 </body>
 </html>

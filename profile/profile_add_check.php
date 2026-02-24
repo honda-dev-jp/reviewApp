@@ -53,7 +53,7 @@ if (!empty($errors)) {
   $_SESSION['error'] = $errors;
   $_SESSION['old'] = $_POST;
   unset($_SESSION['old']['pass'], $_SESSION['old']['pass2']);
-  redirectTo('profile_add.php');
+  redirectTo('/profile/profile_add.php');
 }
 
 /* =========================================================
@@ -124,7 +124,7 @@ try {
   $_SESSION['old'] = $_POST;
   unset($_SESSION['old']['pass'], $_SESSION['old']['pass2']);
 
-  redirectTo('profile_add.php');
+  redirectTo('/profile/profile_add.php');
 } catch (Throwable $e) {
   if (isset($pdo) && $pdo->inTransaction()) {
     $pdo->rollBack();
