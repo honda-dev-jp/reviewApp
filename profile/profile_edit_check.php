@@ -1,6 +1,15 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * プロフィール編集処理（チェック・DB更新）
+ *
+ * 修正履歴：
+ * - [REFACTOR] UPDATE文の4分岐ネストを動的SET句組み立て方式に変更
+ *   パスワード有無 × 画像有無の if/else 4分岐は条件追加時に漏れが起きやすい
+ *   → $setClauses 配列にSET句を積み上げ、implode() で結合する方式に統一
+ */
+
 require_once __DIR__ . '/../config/env.php';
 require_once __DIR__ . '/../app/security/session.php';
 
@@ -12,9 +21,8 @@ session_regenerate_id(true);
 
 require_once __DIR__ . '/../app/guards/request_guard.php';
 require_once __DIR__ . '/../app/guards/auth_guard.php';
-require_once __DIR__ . '/../app/guards/redirect_guard.php';
+require_once __DIR__ . '/../app/guards/redirect_guard.php'; // redirectTo, redirectWithError 等
 require_once __DIR__ . '/../app/security/csrf.php';
-require_once __DIR__ . '/../app/guards/redirect_guard.php';
 require_once __DIR__ . '/../lib/db.php';
 require_once __DIR__ . '/../lib/validation/user.php';
 require_once __DIR__ . '/../lib/image_upload.php';
@@ -97,50 +105,28 @@ try {
     }
   }
 
-	// UPDATE文を組み立て（画像未選択なら image は更新しない）
-	$params = [];
+	// UPDATE文を動的に組み立てる（パスワード有無 × 画像有無の4分岐を排除）
+	// 修正：if/else の4分岐ネストは条件追加時に漏れが起きやすいため
+	//       SET句を配列で積み上げる方式に統一し、可読性・保守性を向上させた
+	$setClauses = ['email = ?', 'name = ?', 'prof = ?'];
+	$params     = [$email, $name, $prof];
+
+	// パスワードが入力されていれば SET に追加
 	if ($pass !== '') {
-		if ($savedImageName !== null) {
-			$sql = 'UPDATE users SET email=?, pass=?, name=?, prof=?, image=? WHERE user_id=?';
-			$params = [
-				$email,
-				password_hash($pass, PASSWORD_DEFAULT),
-				$name,
-				$prof,
-				$savedImageName,
-				$user_id
-			];
-		} else {
-			$sql = 'UPDATE users SET email=?, pass=?, name=?, prof=? WHERE user_id=?';
-			$params = [
-				$email,
-				password_hash($pass, PASSWORD_DEFAULT),
-				$name,
-				$prof,
-				$user_id
-			];
-		}
-	} else {
-		if ($savedImageName !== null) {
-			$sql = 'UPDATE users SET email=?, name=?, prof=?, image=? WHERE user_id=?';
-			$params = [
-				$email,
-				$name,
-				$prof,
-				$savedImageName,
-				$user_id
-			];
-		} else {
-			$sql = 'UPDATE users SET email=?, name=?, prof=? WHERE user_id=?';
-			$params = [
-				$email,
-				$name,
-				$prof,
-				$user_id
-			];
-		}
+		$setClauses[] = 'pass = ?';
+		$params[]     = password_hash($pass, PASSWORD_DEFAULT);
 	}
 
+	// 新画像がアップロードされていれば SET に追加
+	if ($savedImageName !== null) {
+		$setClauses[] = 'image = ?';
+		$params[]     = $savedImageName;
+	}
+
+	// WHERE 句用の user_id を末尾に追加
+	$params[] = $user_id;
+
+	$sql  = 'UPDATE users SET ' . implode(', ', $setClauses) . ' WHERE user_id = ?';
 	$stmt = $pdo->prepare($sql);
   $stmt->execute($params);
 
