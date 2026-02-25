@@ -23,8 +23,10 @@ require_once __DIR__ . '/../app/guards/request_guard.php';
 require_once __DIR__ . '/../app/guards/auth_guard.php';
 require_once __DIR__ . '/../app/guards/redirect_guard.php'; // redirectTo, redirectWithError 等
 require_once __DIR__ . '/../app/security/csrf.php';
+require_once __DIR__ . '/../app/validators/user_validator.php';
 require_once __DIR__ . '/../lib/db.php';
-require_once __DIR__ . '/../lib/validation/user.php';
+// /app/validators/user_validator.phpを直接読み込むようにした為。
+// require_once __DIR__ . '/../lib/validation/user.php';
 require_once __DIR__ . '/../lib/image_upload.php';
 require_once __DIR__.'/../lib/exception_handler.php';
 
